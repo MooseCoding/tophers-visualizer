@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { useCallback, useState } from "react";
+import { Separator } from "./ui/separator";
 
 export default function PoseControls() {
 
@@ -56,17 +57,18 @@ export default function PoseControls() {
                     <Accordion type="single" collapsible defaultValue="item-1" className="w-full" >
                         <AccordionItem value="item-1">
                         <AccordionTrigger>
-                            <div className="flex w-full flex-row gap-1 pr-4">
+                            <div className="flex w-full flex-row gap-2">
                                 <Input
                                     id={pose.id}
                                     type="text"
                                     placeholder="Pose Name"
                                     defaultValue={pose.name}
-                                    className="w-fit transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                    className="w-fit transition-colors mr-2 focus-visible:border-red-500 focus-visible:ring-red-500"
                                     onClick={(e) => e.stopPropagation()}
                                 />
+                                 <Separator orientation="vertical"/>
                                 <Button className="w-5 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePose(pose.id)}>
-                                    <CircleMinus className="text-[#C00000]" />
+                                    <CircleMinus color="#C00000"/>
                                 </Button>
                             </div>
                         </AccordionTrigger>
@@ -145,7 +147,7 @@ export default function PoseControls() {
                                     </label>
                                 </div>
 
-                                <div className="mt-2 flex w-full gap-2">
+                                <div className="flex w-full gap-2">
                                     <button
                                         type="button"
                                         onClick={() => updatePose(pose.id, { local: true })}
