@@ -1,7 +1,7 @@
 interface Pose {
     id:string,
     name:string
-    x:number,
+    x:number |string,
     y:number,
     heading:number,
     radius: number,

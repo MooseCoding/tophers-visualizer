@@ -65,59 +65,60 @@ export default function PoseControls() {
                                     className="w-fit transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
                                     onClick={(e) => e.stopPropagation()}
                                 />
-                                <Button className="w-5 bg-[#11111]" onClick={()=>deletePose(pose.id)}>
-                                    <CircleMinus color="#C00000"/>
+                                <Button className="w-5 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePose(pose.id)}>
+                                    <CircleMinus className="text-[#C00000]" />
                                 </Button>
                             </div>
                         </AccordionTrigger>
 
                         <AccordionContent className="flex h-full">
-                            <div className="flex flex-col gap-3 p-5">
-                                <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col gap-2 ">
+                                
+                                <div className="grid grid-cols-2 gap-2">
                                     <Field>
-                                        <FieldLabel htmlFor="x-input" className="text-white">
+                                        <FieldLabel htmlFor="x-input" className="text-white text-xs">
                                             X:
                                         </FieldLabel>
                                         <Input
                                             id="x-input"
                                             type="number"
                                             placeholder="X"
-                                            className="w-20 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                            className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
                                             value={pose.x}
                                             onChange={(e) => updatePose(pose.id, { x: Number(e.target.value) })}
                                         />
                                     </Field>
                                     <Field>
-                                        <FieldLabel htmlFor="y-input" className="text-white">
+                                        <FieldLabel htmlFor="y-input" className="text-white text-xs">
                                             Y:
                                         </FieldLabel>
                                         <Input
                                             id="y-input"
                                             type="number"
                                             placeholder="Y"
-                                            className="w-20 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                            className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
                                             value={pose.y}
                                             onChange={(e) => updatePose(pose.id, { y: Number(e.target.value) })}
                                         />
                                     </Field>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-2">
                                     <Field>
-                                        <FieldLabel htmlFor="heading-input" className="text-white">
+                                        <FieldLabel htmlFor="heading-input" className="text-white text-xs">
                                             Heading:
                                         </FieldLabel>
                                         <Input
                                             id="heading-input"
                                             type="number"
                                             placeholder="Heading"
-                                            className="w-20 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                            className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
                                             value={pose.heading}
                                             onChange={(e) => updatePose(pose.id, { heading: Number(e.target.value) })}
                                         />
                                     </Field>
                                     <Field>
-                                        <FieldLabel htmlFor="radius-input" className="text-white">
+                                        <FieldLabel htmlFor="radius-input" className="text-white text-xs">
                                             Radius:
                                         </FieldLabel>
                                         <Input
@@ -127,10 +128,11 @@ export default function PoseControls() {
                                             disabled={!pose.arcPose}
                                             value={pose.radius}
                                             onChange={(e) => updatePose(pose.id, { radius: Number(e.target.value) })}
-                                            className="w-20 transition-all duration-300 ease-in-out focus-visible:border-red-500 focus-visible:ring-red-500 disabled:cursor-not-allowed disabled:opacity-40"
+                                            className="w-20 h-7 transition-all duration-300 ease-in-out focus-visible:border-red-500 focus-visible:ring-red-500 disabled:cursor-not-allowed disabled:opacity-40"
                                         />
                                     </Field>
                                 </div>
+                             
 
                                 <div className="flex items-center space-x-2">
                                     <Switch
@@ -138,7 +140,7 @@ export default function PoseControls() {
                                         checked={pose.arcPose}
                                         onCheckedChange={(checked: boolean) => updatePose(pose.id, { arcPose: checked })}
                                     />
-                                    <label htmlFor="arc-pose" className="cursor-pointer select-none text-sm">
+                                    <label htmlFor="arc-pose" className=" text-xs cursor-pointer select-none">
                                         Arc Pose
                                     </label>
                                 </div>
@@ -147,7 +149,7 @@ export default function PoseControls() {
                                     <button
                                         type="button"
                                         onClick={() => updatePose(pose.id, { local: true })}
-                                        className={`flex-1 rounded-md py-2 text-center text-sm font-semibold text-white transition-colors ${
+                                        className={`flex-1 rounded-md justify-center text-center text-xs h-7 font-semibold text-white transition-colors ${
                                             pose.local
                                                 ? "bg-red-600"
                                                 : "bg-zinc-800 hover:bg-zinc-700"
@@ -158,7 +160,7 @@ export default function PoseControls() {
                                     <button
                                         type="button"
                                         onClick={() => updatePose(pose.id, { local: false })}
-                                        className={`flex-1 rounded-md py-2 text-center text-sm font-semibold text-white transition-colors ${
+                                        className={`flex-1 rounded-md justify-center text-center text-xs h-7 font-semibold text-white transition-colors ${
                                             !pose.local
                                                 ? "bg-red-600"
                                                 : "bg-zinc-800 hover:bg-zinc-700"
