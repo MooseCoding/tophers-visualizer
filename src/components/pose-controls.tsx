@@ -10,29 +10,54 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { useState } from "react";
 
 export default function PoseControls() {
-    const [arcChecked, setArcChecked] = useState<boolean>(false);
-    const [isLocal, setIsLocal] = useState<boolean>(true);
 
+    const [poses, setPoses] = useState<Pose[]>([]);
+    const addPose = () => {
+        setPoses((prevPoses) => {
+            const nextNumber = prevPoses.length + 1;
+            
+            const newPose: Pose = {
+                id: `pose-${Date.now()}`, // Unique timestamp ensures no duplicate IDs
+                name: `Pose ${nextNumber}`,
+                x: 0,
+                y: 0,
+                heading: 0,
+                radius: 0,
+                arcPose: false,
+                local: true,
+            };
+
+        return [...prevPoses, newPose]; // Returns a brand new array with the new pose at the end
+        });
+    };
+    const updatePose = (id: string, updatedFields: Partial<Pose>) => {
+        setPoses((prev) =>
+            prev.map((pose) => 
+            pose.id === id ? { ...pose, ...updatedFields } : pose
+            )
+        );
+    };
     return (
         <div className="flex h-full flex-col">
             <div className="flex justify-center p-4 text-3xl font-bold text-white">
                 Poses
             </div>
-            <Button className="flex m-4">
+            <Button className="flex m-4" onClick={addPose}>
                 <Plus/>
                 Add Pose
             </Button>
             <ScrollArea className="w-full flex-1 min-h-0 border-t p-4">
-                <div className="flex text-white">
+                {poses.map((pose)=>(
+                <div className=" flex text-white" key={pose.id}>
                     <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
                         <AccordionItem value="item-1">
                         <AccordionTrigger>
                             <div className="flex w-full flex-col gap-1 pr-4">
                                 <Input
-                                    id="pose-name"
+                                    id={pose.id}
                                     type="text"
                                     placeholder="Pose Name"
-                                    defaultValue="Pose 1"
+                                    defaultValue={pose.name}
                                     className="w-full transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
                                     onClick={(e) => e.stopPropagation()}
                                 />
@@ -51,6 +76,7 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="X"
                                             className="w-20 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                            defaultValue={pose.x}
                                         />
                                     </Field>
                                     <Field>
@@ -62,6 +88,7 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="Y"
                                             className="w-20 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                            defaultValue={pose.y}
                                         />
                                     </Field>
                                 </div>
@@ -76,6 +103,7 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="Heading"
                                             className="w-20 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
+                                            defaultValue={pose.heading}
                                         />
                                     </Field>
                                     <Field>
@@ -86,7 +114,7 @@ export default function PoseControls() {
                                             id="radius-input"
                                             type="number"
                                             placeholder="Radius"
-                                            disabled={!arcChecked}
+                                            disabled={!pose.arcPose}
                                             className="w-20 transition-all duration-300 ease-in-out focus-visible:border-red-500 focus-visible:ring-red-500 disabled:cursor-not-allowed disabled:opacity-40"
                                         />
                                     </Field>
@@ -95,8 +123,8 @@ export default function PoseControls() {
                                 <div className="flex items-center space-x-2">
                                     <Switch
                                         id="arc-pose"
-                                        checked={arcChecked}
-                                        onCheckedChange={(checked: boolean) => setArcChecked(checked)}
+                                        checked={pose.arcPose}
+                                        onCheckedChange={(checked: boolean) => updatePose(pose.id, { arcPose: checked })}
                                     />
                                     <label htmlFor="arc-pose" className="cursor-pointer select-none text-sm">
                                         Arc Pose
@@ -106,9 +134,9 @@ export default function PoseControls() {
                                 <div className="mt-2 flex w-full gap-2">
                                     <button
                                         type="button"
-                                        onClick={() => setIsLocal(true)}
+                                        onClick={() => updatePose(pose.id, { local: true })}
                                         className={`flex-1 rounded-md py-2 text-center text-sm font-semibold text-white transition-colors ${
-                                            isLocal
+                                            pose.local
                                                 ? "bg-red-600"
                                                 : "bg-zinc-800 hover:bg-zinc-700"
                                         }`}
@@ -117,9 +145,9 @@ export default function PoseControls() {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => setIsLocal(false)}
+                                        onClick={() => updatePose(pose.id, { local: false })}
                                         className={`flex-1 rounded-md py-2 text-center text-sm font-semibold text-white transition-colors ${
-                                            !isLocal
+                                            !pose.local
                                                 ? "bg-red-600"
                                                 : "bg-zinc-800 hover:bg-zinc-700"
                                         }`}
@@ -133,6 +161,7 @@ export default function PoseControls() {
                         </AccordionItem>
                     </Accordion>
                 </div>
+                ))}
             </ScrollArea> 
         </div>
     );
