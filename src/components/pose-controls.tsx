@@ -57,7 +57,7 @@ export default function PoseControls() {
                     <Accordion type="single" collapsible defaultValue="item-1" className="w-full" >
                         <AccordionItem value="item-1">
                         <AccordionTrigger>
-                            <div className="flex w-full flex-row gap-2">
+                            <div className="flex w-full flex-row gap-2 mr-2">
                                 <Input
                                     id={pose.id}
                                     type="text"
@@ -66,13 +66,12 @@ export default function PoseControls() {
                                     className="w-fit transition-colors mr-2 focus-visible:border-red-500 focus-visible:ring-red-500"
                                     onClick={(e) => e.stopPropagation()}
                                 />
-                                 <Separator orientation="vertical"/>
-                                <Button className="w-5 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePose(pose.id)}>
-                                    <CircleMinus color="#C00000"/>
-                                </Button>
+                                <Separator orientation="vertical"/>
+                        <Button className="w-5 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePose(pose.id)}>
+                            <CircleMinus color="#C00000"/>
+                        </Button>
                             </div>
                         </AccordionTrigger>
-
                         <AccordionContent className="flex h-full">
                             <div className="flex flex-col gap-2 ">
                                 
@@ -86,8 +85,11 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="X"
                                             className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
-                                            value={pose.x}
-                                            onChange={(e) => updatePose(pose.id, { x: Number(e.target.value) })}
+                                            value={pose.x === 0 ? "" : pose.x}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                updatePose(pose.id, { x: val === "" || val === "-" ? 0 : Number(val) });
+                                            }}
                                         />
                                     </Field>
                                     <Field>
@@ -99,8 +101,11 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="Y"
                                             className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
-                                            value={pose.y}
-                                            onChange={(e) => updatePose(pose.id, { y: Number(e.target.value) })}
+                                            value={pose.y === 0 ? "" : pose.y}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                updatePose(pose.id, { y: val === "" || val === "-" ? 0 : Number(val) });
+                                            }}
                                         />
                                     </Field>
                                 </div>
@@ -115,8 +120,11 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="Heading"
                                             className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500"
-                                            value={pose.heading}
-                                            onChange={(e) => updatePose(pose.id, { heading: Number(e.target.value) })}
+                                            value={pose.heading === 0 ? "" : pose.heading}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                updatePose(pose.id, { heading: val === "" || val === "-" ? 0 : Number(val) });
+                                            }}
                                         />
                                     </Field>
                                     <Field>
@@ -128,8 +136,11 @@ export default function PoseControls() {
                                             type="number"
                                             placeholder="Radius"
                                             disabled={!pose.arcPose}
-                                            value={pose.radius}
-                                            onChange={(e) => updatePose(pose.id, { radius: Number(e.target.value) })}
+                                            value={pose.radius === 0 ? "" : pose.radius}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                updatePose(pose.id, { radius: val === "" || val === "-" ? 0 : Number(val) });
+                                            }}
                                             className="w-20 h-7 transition-all duration-300 ease-in-out focus-visible:border-red-500 focus-visible:ring-red-500 disabled:cursor-not-allowed disabled:opacity-40"
                                         />
                                     </Field>
