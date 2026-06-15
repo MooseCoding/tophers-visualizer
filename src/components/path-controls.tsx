@@ -33,6 +33,10 @@ interface pathControlProps {
     addPath: () => void;
     updatePath: (id: string, updatedFields: Partial<Path>) => void;
     deletePath: (id: string) => void;
+   deleteControlPoint: (pathId: string, currentPoints: ControlPoints[], controlPointId: string) => void;
+    addControlPoint: (pathId: string, currentPoints?: ControlPoints[]) => void;
+    updateControlPoint: (pathId: string, currentPoints: ControlPoints[], controlPointId: string, updatedFields: Partial<ControlPoints>) => void;
+
 }
 
 export default function PathControls({ 
@@ -41,30 +45,12 @@ export default function PathControls({
     setPaths,
     addPath,
     updatePath,
-    deletePath  
+    deletePath,
+    deleteControlPoint,
+    addControlPoint,
+    updateControlPoint  
  }: pathControlProps) {
     const poses = Poses || [];
-    const addControlPoint = (pathId: string, currentPoints: ControlPoints[] = []) => {
-        const newPoint: ControlPoints = {
-            id: `Point${Date.now()}`,
-            poseName: ""
-        };
-        updatePath(pathId, {
-            controlPoints: [...currentPoints, newPoint]
-        });
-    };
-
-    const updateControlPoint = (pathId: string, currentPoints: ControlPoints[], controlPointId: string, updatedFields: Partial<ControlPoints>) => {
-        const updatedPoints = currentPoints.map((point) =>
-            point.id === controlPointId ? { ...point, ...updatedFields } : point
-        );
-        updatePath(pathId, { controlPoints: updatedPoints });
-    };
-
-    const deleteControlPoint = (pathId: string, currentPoints: ControlPoints[], controlPointId: string) => {
-        const filteredPoints = currentPoints.filter((point) => point.id !== controlPointId);
-        updatePath(pathId, { controlPoints: filteredPoints });
-    };
     
     return (
         <div className="flex h-full flex-col">
@@ -171,7 +157,7 @@ export default function PathControls({
                                                                             <div className="flex">
                                                                                 <Button 
                                                                                     className="bg-transparent hover:bg-transparent" 
-                                                                                    onClick={() => deleteControlPoint(path.id, path.controlPoints, controlPoint.id)}
+                                                                                    onClick={()=>deleteControlPoint(path.id, path.controlPoints, controlPoint.id)}
                                                                                 >
                                                                                     <CircleMinus color="#C00000"/>
                                                                                 </Button>

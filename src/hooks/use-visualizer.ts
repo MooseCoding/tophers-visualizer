@@ -76,5 +76,29 @@ export const Paths=()=>{
     }, [setPaths]);
 
 
-    return{paths,setPaths,addPath,updatePath,deletePath}
+
+    const addControlPoint = (pathId: string, currentPoints: ControlPoints[] = []) => {
+        const newPoint: ControlPoints = {
+            id: `Point${Date.now()}`,
+            poseName: ""
+        };
+        updatePath(pathId, {
+            controlPoints: [...currentPoints, newPoint]
+        });
+    };
+
+    const updateControlPoint = (pathId: string, currentPoints: ControlPoints[], controlPointId: string, updatedFields: Partial<ControlPoints>) => {
+        const updatedPoints = currentPoints.map((point) =>
+            point.id === controlPointId ? { ...point, ...updatedFields } : point
+        );
+        updatePath(pathId, { controlPoints: updatedPoints });
+    };
+
+    const deleteControlPoint = (pathId: string, currentPoints: ControlPoints[], controlPointId: string) => {
+        const filteredPoints = currentPoints.filter((point) => point.id !== controlPointId);
+        updatePath(pathId, { controlPoints: filteredPoints });
+    };
+
+
+    return{paths,setPaths,addPath,updatePath,deletePath,addControlPoint,updateControlPoint,deleteControlPoint}
 }
