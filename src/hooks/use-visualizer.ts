@@ -7,7 +7,7 @@ export const Poses=() =>{
         setPoses((prevPoses) => {
             const nextNumber = prevPoses.length + 1;
             
-            const newPose: Pose = {
+            const newPose:Pose = {
                 id: `pose-${Date.now()}`,
                 name: `Pose${nextNumber}`,
                 x: 0,

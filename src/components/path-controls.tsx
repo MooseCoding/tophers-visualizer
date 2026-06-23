@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import clsx from "clsx";
 interface pathControlProps {
     Poses: Pose[];
     paths: Path[];
@@ -60,6 +61,7 @@ export default function PathControls({
 
     
     return (
+        //THE POSES ARE COOKED, THE CONTROL POINTS INTERFACE ONLY TAKE POSENAMES RIGHT NOW, IF 2 THINGS WITH THE SAME NAME SHOW UP, UR COOKED
         <div className="flex h-full flex-col">
             <div className="flex justify-center p-4 text-3xl font-bold text-white">
                 Paths
@@ -118,8 +120,7 @@ export default function PathControls({
                                                     
                                                 </div>
                                             </AccordionTrigger>
-                                            
-                                            <Button className=" ml-2 mt-2 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePath(path.id)}>
+                                            <Button className="ml-2 mt-2 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePath(path.id)}>
                                                 <CircleMinus color="#C00000"/>
                                             </Button>
                                             
