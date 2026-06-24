@@ -33,9 +33,9 @@ interface pathControlProps {
     addPath: () => void;
     updatePath: (id: string, updatedFields: Partial<Path>) => void;
     deletePath: (id: string) => void;
-    deleteControlPoint: (pathId: string, currentPoints: ControlPoints[], controlPointId: string) => void;
-    addControlPoint: (pathId: string, currentPoints?: ControlPoints[]) => void;
-    updateControlPoint: (pathId: string, currentPoints: ControlPoints[], controlPointId: string, updatedFields: Partial<ControlPoints>) => void;
+    deleteControlPoint: (pathId: string, currentPoints: ControlPoint[], controlPointId: string) => void;
+    addControlPoint: (pathId: string, currentPoints?: ControlPoint[]) => void;
+    updateControlPoint: (pathId: string, currentPoints: ControlPoint[], controlPointId: string, updatedFields: Partial<ControlPoint>) => void;
     addCallback: (pathId: string, currentCallbacks?: Callback[]) => void;
     updateCallback: (pathId: string, currentCallbacks: Callback[], callbackId: string, updatedFields: Partial<Callback>) => void;
     deleteCallback: (pathId: string, currentCallbacks: Callback[], controlPointId: string) => void;
@@ -60,6 +60,7 @@ export default function PathControls({
 
     
     return (
+        //THE POSES ARE COOKED, THE CONTROL POINTS INTERFACE ONLY TAKE POSENAMES RIGHT NOW, IF 2 THINGS WITH THE SAME NAME SHOW UP, UR COOKED
         <div className="flex h-full flex-col">
             <div className="flex justify-center p-4 text-3xl font-bold text-white">
                 Paths
@@ -118,8 +119,7 @@ export default function PathControls({
                                                     
                                                 </div>
                                             </AccordionTrigger>
-                                            
-                                            <Button className=" ml-2 mt-2 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePath(path.id)}>
+                                            <Button className="ml-2 mt-2 bg-[#11111] hover:bg-[#11111]" onClick={()=>deletePath(path.id)}>
                                                 <CircleMinus color="#C00000"/>
                                             </Button>
                                             
@@ -157,6 +157,9 @@ export default function PathControls({
                                                             <SortableContent asChild>
                                                             <TableBody>
                                                                 {(path.controlPoints || []).map((controlPoint) => (
+
+                                                                    
+                                                                    
                                                                 <SortableItem key={controlPoint.id} value={controlPoint.id} asChild>
                                                                     <TableRow>
                                                                     <TableCell className="font-medium"> 
@@ -169,9 +172,12 @@ export default function PathControls({
                                                                                     <CircleMinus color="#C00000"/>
                                                                                 </Button>
                                                                             </div>
+                                                                            {controlPoint.poseId === undefined
+                                                                            ?"false"
+                                                                            :"true"}
                                                                             <div className="flex flex-row">
                                                                                 <Combobox 
-                                                                                    items={poses.map((p) => p.name)}
+                                                                                    items={poses.map((p) => p)}
                                                                                     onValueChange={(value) => {
                                                                                         updateControlPoint(path.id, path.controlPoints, controlPoint.id, { 
                                                                                             poseName: (value as string) ?? "" 
@@ -181,16 +187,18 @@ export default function PathControls({
 
                                                                                     <ComboboxInput 
                                                                                         placeholder="Select a Pose" 
-                                                                                        value={controlPoint.poseName || ""} 
+                                                                                    
                                                                                     />
                                                                                     <ComboboxContent>
                                                                                         <ComboboxEmpty>No Poses found.</ComboboxEmpty>
                                                                                         <ComboboxList>
-                                                                                            {(item) => (
-                                                                                                <ComboboxItem key={item} value={item}>
-                                                                                                    {item}
-                                                                                                </ComboboxItem>
-                                                                                            )}
+                                                                                                {(item) => (
+                                                                                                    <ComboboxItem key={item.id} value={item.name}
+                                                                                                    >
+                                                                                                        {item.name}
+                                                                                                        
+                                                                                                    </ComboboxItem>
+                                                                                                )}
                                                                                         </ComboboxList>
                                                                                     </ComboboxContent>
                                                                                 </Combobox>
