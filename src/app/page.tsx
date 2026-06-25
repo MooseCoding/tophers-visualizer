@@ -5,6 +5,10 @@ import PathControls from "@/components/path-controls";
 import { Paths, Poses } from "@/hooks/use-visualizer";
 import PoseControls from "@/components/pose-controls";
 
+import { useEffect, useState, useRef } from "react";
+
+import DrawPoses from "@/visualization/pose-visualizer";
+
 export default function Home() {
 
   const {
@@ -28,6 +32,35 @@ export default function Home() {
     updateCallback,
     deleteCallback
   } = Paths();
+
+  const imageRef = useRef<HTMLImageElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  
+    useEffect(() => {
+      if (!containerRef.current || !imageRef.current) return;
+  
+      const updateDimensions = () => {
+        if (imageRef.current) {
+          // Obtains actual scaled layout constraints from object-contain bounds
+          setDimensions({
+            width: imageRef.current.clientWidth,
+            height: imageRef.current.clientHeight,
+          });
+        }
+      };
+  
+      const resizeObserver = new ResizeObserver(() => {
+        updateDimensions();
+      });
+  
+      resizeObserver.observe(containerRef.current);
+      imageRef.current.addEventListener('load', updateDimensions);
+  
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }, []);
 
   return (
     // Replaced h-screen with calc(100vh - navbar_height) so it fits perfectly on your monitor
@@ -55,7 +88,13 @@ export default function Home() {
                   className="max-h-full max-w-full object-contain"
                   alt="Decode Field"
                   draggable="false"
-              />
+            />
+
+            <DrawPoses 
+                            poses={poses} 
+                            
+                          />
+                      
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />

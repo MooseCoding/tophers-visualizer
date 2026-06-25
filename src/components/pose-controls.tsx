@@ -7,7 +7,7 @@ import { CircleMinus, GripVertical, Plus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { Sortable, SortableContent, SortableItem, SortableItemHandle, SortableOverlay } from "./ui/sortable";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
@@ -22,6 +22,12 @@ interface PoseControlProps {
 export default function PoseControls({
   poses, deletePose, addPose, updatePose, setPoses
 }: PoseControlProps) {
+
+  // Prints the pose info to console for debugging reasons
+  useEffect(() => {
+      console.log("--- Current Poses State ---");
+      console.table(poses);
+    }, [poses]);
   
   return (
     <div className="flex h-full flex-col">
@@ -51,10 +57,8 @@ export default function PoseControls({
                           <AccordionItem value={pose.id} className="border-none">
                             <div className="flex flex-row items-center w-full justify-between gap-4 py-1 text-white">
                               <div className="flex items-center gap-2 flex-1">
-                                <SortableItemHandle>
-                                  <Button variant="ghost" className="h-8 w-8 p-0 cursor-grab active:cursor-grabbing text-zinc-400 hover:text-white">
+                                <SortableItemHandle className="h-8 w-8 p-0 cursor-grab active:cursor-grabbing text-zinc-400 hover:text-white">
                                     <GripVertical className="h-4 w-4" />
-                                  </Button>
                                 </SortableItemHandle>
 
                                 <Input
@@ -91,7 +95,7 @@ export default function PoseControls({
                                     <Input
                                       id={`x-${pose.id}`}
                                       type="number"
-                                      placeholder="X"
+                                      placeholder="x"
                                       min={-70.5}
                                       max={70.5}
                                       className="w-20 h-7 transition-colors focus-visible:border-red-500 focus-visible:ring-red-500 bg-zinc-900"
